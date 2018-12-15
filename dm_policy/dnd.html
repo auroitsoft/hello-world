@@ -1,0 +1,154 @@
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="google-signin-client_id" content="378258426408-50jmfd2t2u3e6ovg3ami656pf1lnnand.apps.googleusercontent.com">
+	</head>
+	<body style="text-align: center;">
+		<style type="text/css">
+			html,body{
+				height:100%;
+				overflow: hidden;
+			}
+
+			#wrapper{
+				width:100%;
+			}
+
+			#container{
+				height:500px;
+				width: 90%;
+				margin:0px auto 0;
+				overflow-y:auto;
+				outline:1px solid #e0e0e0;
+				padding:10px;
+				border-radius:8px;
+			}
+
+			.hidden{
+				visibility:hidden;
+			}
+
+			.g-signin2{
+				width:120px;
+				margin:0 auto;
+			}
+
+			input{    margin: 0;
+					height: 36px;
+					border-width: 1px;
+					border-color: #c8ccd0;
+					border-radius: 3px;
+					width: 350px;
+					font-size: 14px;
+					background-color: #FFF;
+					box-shadow: none;
+					color: #3b4045;
+					padding:0 10px;}
+
+
+		</style>
+		<img src="http://www.decisionminds.com/assets/images/frontend/logo-2.png" style="max-height:60px;">
+
+		<div id="container">
+			<canvas id="wrapper"></canvas>
+		</div>
+		<!--<iframe src="{% static '/views/dm.pdf' %}" scrolling="no" id="myframe" onload="callme(this)" ></iframe>-->
+		
+		<div id="submit-btn" style="width:100%;margin:20px 0;text-align:center;padding:10px;" class="form-actions hidden">
+            <form action="https://docs.google.com/forms/d/e/1FAIpQLSdMwg0NimZX0f9bpQ5lE06iM9gXrDFxz2bg8jjgf_L9AbGakA/formResponse" target="_self" method="POST" id="mG61Hd">
+
+				<input type="text" name="entry.1164787778" id="entry.1164787778" placeholder="enter decisionminds email id">
+				<br>
+				<button type="submit" id="submit-form" style="margin-top:10px;">Submit</button>
+
+			</form>
+        </div>
+        
+
+
+
+
+
+		<script src="pdf.js"></script>
+		<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
+			<script src="https://apis.google.com/js/platform.js" async defer></script>
+		<script>
+
+		function lodDoc(){
+			var totalPages = 0
+			var c = document.getElementById('container')
+
+
+			PDFJS.getDocument('dnd.pdf').then(function(pdf){
+				totalPages = pdf.pdfInfo.numPages
+				if(totalPages > 0){
+					renderPage(1, totalPages, pdf, 'wrapper')
+				}
+			})
+
+
+			function renderPage(num, totalPages, pdf, id){
+
+				pdf.getPage(num).then(function(page) {
+					var scale = 1.5;
+					var viewport = page.getViewport(scale);
+
+					var canvas = document.getElementById(id);
+					var context = canvas.getContext('2d');
+					canvas.height = viewport.height;
+					canvas.width = viewport.width;
+
+					var renderContext = {
+					  canvasContext: context,
+					  viewport: viewport
+					};
+					page.render(renderContext);
+				});
+
+				if(num < totalPages){
+					num += 1
+					var d = 'wrapper' + num
+					c.innerHTML += "<canvas id=" +d+ "></canvas>"
+					renderPage(num, totalPages, pdf,d)
+				}else if(num == totalPages){
+					//var btn = document.getElementById('submit-btn')
+					//btn.classList.remove("hidden")
+					$(c).append($('#submit-btn'))
+					$('#submit-btn').removeClass('hidden')
+				}
+
+			}
+		}
+
+
+		var cont = document.getElementById('container')
+
+		cont.addEventListener('scroll', function(e){
+
+
+			if ((cont.scrollHeight - cont.scrollTop) > (cont.clientHeight-50) && (cont.scrollHeight - cont.scrollTop) < (cont.clientHeight))
+			{
+				var element = document.getElementById("submit-btn");
+			    // element.classList.remove("hidden");
+			}
+
+
+		})
+
+		lodDoc()
+
+
+
+	</script>
+
+
+	</body>
+
+</html>
+

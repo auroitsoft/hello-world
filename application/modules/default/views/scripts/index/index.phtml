@@ -1,0 +1,215 @@
+
+<!--<script src="https://apis.google.com/js/platform.js" async defer></script>-->
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<script src="https://apis.google.com/js/api:client.js"></script>
+<!--<meta name="google-signin-client_id" content="378258426408-50jmfd2t2u3e6ovg3ami656pf1lnnand.apps.googleusercontent.com">-->
+<script>
+    var googleUser = {};
+    var startApp = function() {
+        gapi.load('auth2', function(){
+            // Retrieve the singleton for the GoogleAuth library and set up the client.
+            auth2 = gapi.auth2.init({
+                client_id: '378258426408-50jmfd2t2u3e6ovg3ami656pf1lnnand.apps.googleusercontent.com',
+                cookiepolicy: 'single_host_origin',
+                // Request scopes in addition to 'profile' and 'email'
+                //scope: 'additional_scope'
+            });
+            attachSignin(document.getElementById('customBtn'));
+        });
+    };
+
+    function attachSignin(element) {
+        //console.log(element.id);
+        auth2.attachClickHandler(element, {},
+            function(googleUser) {
+                document.getElementById('name').innerText = "Signed in: " +
+                    googleUser.getBasicProfile().getName();
+                var id_token = googleUser.getAuthResponse().id_token;
+                $('#id_token').val(id_token)
+                $("#idfrm").attr("action", "<?php echo BASE_URL;?>index/loginpopupsave");
+                $("#idfrm").submit()
+            }, function(error) {
+                //alert(JSON.stringify(error, undefined, 2));
+            });
+    }
+</script>
+<style type="text/css">
+    #customBtn {
+        padding: 5px;
+        display: inline-block;
+        background: white;
+        color: #444;
+        width: 190px;
+        border-radius: 5px;
+        border: thin solid #d8d3d3;
+        /*box-shadow: 1px 1px 1px grey;*/
+        white-space: nowrap;
+    }
+    #customBtn:hover {
+        cursor: pointer;
+    }
+    span.label {
+        font-family: serif;
+        font-weight: normal;
+    }
+    span.icon {
+/*background: url('<?php  echo BASE_URL;?>public/media/images/g-normal.png') transparent 5px 50% no-repeat;*/
+        display: inline-block;
+        vertical-align: middle;
+        width: 42px;
+        height: 42px;
+    }
+    span.buttonText {
+        display: inline-block;
+        vertical-align: middle;
+        padding-left: 42px;
+        padding-right: 42px;
+        font-size: 14px;
+        font-weight: bold;
+        /* Use the Roboto font that is loaded in the <head> */
+        font-family: 'Roboto', sans-serif;
+    }
+</style>
+
+
+<?php 
+/********************************************************************************* 
+ *  This file is part of Sentrifugo.
+ *  Copyright (C) 2014 Sapplica
+ *   
+ *  Sentrifugo is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Sentrifugo is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Sentrifugo.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  Sentrifugo Support <support@sentrifugo.com>
+ ********************************************************************************/
+?>
+		<div>
+				
+		</div>
+		
+	        <form id='idfrm' name="loginform"  method="post">
+<!--                action="--><?php //echo BASE_URL;?><!--/index/loginpopupsave"-->
+                <div><h1>Log in</h1></div>
+<!--						<div class="fltleft fullwidth">-->
+<!--							<div class="login-fields" tabindex="0">-->
+<!--							   <label>User Name</label>-->
+<!--								<input type="text" class="required" name="username" id="username" maxlength="50" placeholder="Enter your username or email" tabindex="1"/>-->
+<!--								    <div class="errorMsg" style="display:none" id="usernameerror"></div>-->
+<!--							</div>-->
+<!--							<div class="login-fields">-->
+<!--							   <label>Password</label>-->
+<!--							   <input type="password" class="required" name="password" id="password" maxlength="15" onkeydown="return keycodeforIE(event)" placeholder="Enter your password" tabindex="2"/>-->
+<!---->
+<!--								--><?php //if (count($this->messages)) {?>
+<!--									<div class="errorMsg" id="usernameerror">-->
+<!---->
+<!--											 --><?php //foreach ($this->messages as $message){
+//												  echo $this->escape($message);
+//												  }
+//											 ?>
+<!--									</div>-->
+<!--								--><?php //}else{ ?>
+<!--							        <div class="errorMsg" style="display:none" id="pwderror"></div>-->
+<!--							    --><?php //}?>
+<!--							</div>-->
+<!---->
+<!--							<div class="login-button">-->
+<!--							  <button type="" value="Log In" id="loginsubmit" tabindex="-1" onclick="submitForm()">Log In</button>-->
+<!--							</div>-->
+<!--   							<div class="forgotpassword"><a id="forgotpwdtext">Forgot Password?</a></div>-->
+<!--                         </div>-->
+
+                         <input type="hidden" name="id_token" id="id_token">
+
+						</form>
+<!--							<div class="forgot-line" id="forgotpassworddiv" style="display:none;">-->
+<!--									<div class="login-fields">-->
+<!---->
+<!--										<input type="text" class="email-status" placeholder="Enter your email" id="emailaddress" name="emailaddress" />-->
+<!--										<div id="forgot_error_message" class="errorMsg" style="display:none;"></div>-->
+<!--										<div id="forgot_succ_message" class="succMsg" style="display:none;"></div>-->
+<!--									</div>-->
+<!--									 <div class="login-button">-->
+<!--									   <input type="button" onclick="sendPassword();" id="forgotpwdbutton" value="Send password" />-->
+<!--									 </div>-->
+<!--							</div>-->
+<!--                            <button onclick="submitA()" >Goggle Login</button>-->
+<!--					    <input type="button" value="Goggle Login" onclick="submitA()">-->
+<!--                        <div style="display: none" class="g-signin2" data-onsuccess="onSignIn"> </div>-->
+
+<div id="gSignInWrapper">
+<!--    --><?php //echo(BASE_URL);?><!--public/media/images/g-normal.png-->
+<!--    <span class="label">Sign in with:</span>-->
+    <center>
+        <div id="customBtn" class="customGPlusSignIn">
+        <span class="icon">
+            <img width="41" src="<?php  echo BASE_URL;?>../public/media/images/g-normal.png" alt="">
+        </span>
+            <span class="buttonText">Google</span>
+        </div>
+    </center>
+
+</div>
+<center>
+    <div id="name"></div>
+</center>
+
+<script>startApp();</script>
+
+
+<!--    </div>-->
+<!--	</div>-->
+<!--	</div>-->
+
+
+
+<script type="text/javascript">
+
+	//function onSignIn(googleUser) {
+	//	// console.log(googleUser)
+	//	var id_token = googleUser.getAuthResponse().id_token;
+	//	// console.log(id_token)
+	//	// var profile = googleUser.getBasicProfile();
+	//	// console.log(profile);
+	//	// var email = profile.getEmail();
+    //
+	//	$('#id_token').val(id_token)
+    //
+	//	// console.log(email)
+    //
+	//	$("#idfrm").attr("action", "<?php //echo BASE_URL;?>//index/loginpopupsave");
+    //    // $("#idfrm").submit()
+	//}
+	//function submitA(){
+	//	$("#idfrm").submit()
+    //    // onSignIn(googleUser)
+	//}
+
+ $(document).ready(function(){
+    <?php if (count($this->messages)) {?>
+	    $('#loginpopdiv').show();
+		$("#hometab").removeClass("active");
+		$("#loginbutton").addClass("active");
+	<?php } ?>
+
+});
+
+$('#emailaddress').keydown(function(e) {
+
+		 var code = e.keyCode || e.which;
+		 if(code == 13) { //Enter keycode
+		   sendPassword();
+		 }
+	});
+
+</script>
